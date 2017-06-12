@@ -1,0 +1,35 @@
+演習1-2-1
+重複組み合わせ
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+以下のテーブルの2列の重複組み合わせを求める。
+  name  | price
+--------+-------
+ りんご |   100
+ みかん |    50
+ バナナ |    80
+
+SELECT
+P1.name AS name_1,
+P2.name AS name_2
+
+FROM
+Products AS P1,
+Products AS P2
+
+WHERE
+P1.name >= P2.name
+
+ORDER BY
+P1.name DESC
+;
+
+ name_1 | name_2
+--------+--------
+ バナナ | みかん
+ バナナ | りんご
+ バナナ | バナナ
+ りんご | みかん
+ りんご | りんご
+ みかん | みかん
