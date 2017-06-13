@@ -1,0 +1,26 @@
+演習1-7-1
+UNIONだけを使うコンペアの改良
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+SELECT
+CASE
+	WHEN COUNT(*) = (SELECT COUNT(*) FROM Tbl_A)
+	     AND
+	     COUNT(*) = (SELECT COUNT(*) FROM Tbl_B)
+	THEN '等しい'
+	ELSE '異なる' END AS result
+
+FROM
+(SELECT *
+ FROM Tbl_A
+
+ UNION
+
+ SELECT *
+ FROM Tbl_B) AS TMP
+;
+
+ result
+--------
+ 等しい
