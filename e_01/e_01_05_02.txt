@@ -1,0 +1,27 @@
+演習1-5-2
+子供の数にご用心
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+SELECT
+EMP.employee,
+COUNT(CHILDREN.child) AS child_cnt
+
+FROM
+Personnel AS EMP
+
+LEFT OUTER JOIN
+Children
+
+ON CHILDREN.child IN (EMP.child_1, EMP.child_2, EMP.child_3)
+
+GROUP BY
+EMP.employee
+;
+
+ employee | child_cnt
+----------+-----------
+ 工藤     |         2
+ 赤井     |         3
+ 鈴木     |         1
+ 吉田     |         0
