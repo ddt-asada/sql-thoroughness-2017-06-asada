@@ -1,0 +1,37 @@
+‰‰K1-8-3
+‘f”‚ð‹‚ß‚é
+ì¬“úF2017”N6ŒŽ14“ú
+ì¬ŽÒFó“c@’mŽk
+
+SELECT
+Num1.num
+
+FROM
+Numbers AS Num1
+
+WHERE
+Num1.num > 1
+AND
+NOT EXISTS (SELECT
+	    *
+	    FROM
+	    Numbers AS Num2
+
+	    WHERE
+	    Num2.num <= Num1.num / 2
+	    AND
+	    Num2.num <> 1
+	    AND
+	    MOD(Num1.num,Num2.num) = 0)
+;
+
+ num
+-----
+   2
+   3
+   5
+   7
+  11
+  13
+  17
+  19
