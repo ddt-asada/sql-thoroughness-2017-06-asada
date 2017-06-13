@@ -1,0 +1,32 @@
+演習1-7-2
+厳密な関係除算
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+SELECT DISTINCT
+ES1.emp
+
+FROM
+EmpSkills AS ES1,
+Skills AS S1
+
+WHERE
+NOT EXISTS
+	(SELECT skill
+	 FROM Skills
+	 EXCEPT
+	 SELECT skill
+	 FROM EmpSkills AS ES2
+	 WHERE ES1.emp = ES2.emp)
+AND NOT EXISTS
+	(SELECT skill
+	 FROM EmpSkills AS ES2
+	 WHERE ES1.emp = ES2.emp
+	 EXCEPT
+	 SELECT skill
+	 FROM Skills)	 
+;
+
+ emp
+------
+ 神崎
