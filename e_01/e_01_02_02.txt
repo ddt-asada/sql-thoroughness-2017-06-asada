@@ -1,0 +1,84 @@
+演習1-2-2
+地域ごとにランキングを求める。
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+ district |  name   | price
+----------+---------+-------
+ 東北     | みかん  |   100
+ 東北     | りんご  |    50
+ 東北     | ぶどう  |    50
+ 東北     | レモン  |    30
+ 関東     | レモン  |   100
+ 関東     | パイン  |   100
+ 関東     | りんご  |   100
+ 関東     | ぶどう  |    70
+ 関西     | レモン  |    70
+ 関西     | スイカ  |    30
+ 関西     | りんご  |    30
+
+このテーブルのを地域ごとに値段のランキングを求める。
+
+自己結合を利用したもの。
+
+SELECT
+D1.district,
+D1.name,
+D1.price,
+COUNT(D2.price) + 1 AS rank_1
+
+FROM
+DistrictProducts AS D1
+
+LEFT OUTER JOIN
+DistrictProducts AS D2
+
+ON
+D1.district = D2.district
+AND
+D1.price < D2.price
+
+GROUP BY
+D1.district,
+D1.name
+;
+
+ district |  name   | price | rank_1
+----------+---------+-------+--------
+ 東北     | ぶどう  |    50 |      2
+ 東北     | みかん  |   100 |      1
+ 東北     | りんご  |    50 |      2
+ 東北     | レモン  |    30 |      4
+ 関東     | ぶどう  |    70 |      4
+ 関東     | りんご  |   100 |      1
+ 関東     | パイン  |   100 |      1
+ 関東     | レモン  |   100 |      1
+ 関西     | りんご  |    30 |      2
+ 関西     | スイカ  |    30 |      2
+ 関西     | レモン  |    70 |      1
+
+OLAP関数を利用したもの
+
+SELECT
+district,
+price,
+name,
+RANK() OVER (PARTITION BY district ORDER BY price DESC) AS rank_1
+
+FROM
+DistrictProducts
+;
+
+ district | price |  name   | rank_1
+----------+-------+---------+--------
+ 東北     |   100 | みかん  |      1
+ 東北     |    50 | りんご  |      2
+ 東北     |    50 | ぶどう  |      2
+ 東北     |    30 | レモン  |      4
+ 関東     |   100 | レモン  |      1
+ 関東     |   100 | パイン  |      1
+ 関東     |   100 | りんご  |      1
+ 関東     |    70 | ぶどう  |      4
+ 関西     |    70 | レモン  |      1
+ 関西     |    30 | スイカ  |      2
+ 関西     |    30 | りんご  |      2
