@@ -1,0 +1,22 @@
+演習1-8-1
+配列テーブル
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+SELECT DISTINCT
+key
+
+FROM
+ArrayTbl2 AS A1
+
+WHERE
+NOT EXISTS (SELECT
+		*
+		FROM
+		ArrayTbl2 AS A2
+
+		WHERE
+		A1.key = A2.key
+		AND(
+		A2.val <> 1 OR A2.val IS NULL))
+;
