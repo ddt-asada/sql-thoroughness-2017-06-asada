@@ -1,0 +1,47 @@
+演習1-4-3
+バスケット解析の一般化
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+   item
+----------
+ ビール
+ 紙オムツ
+ 自転車
+
+ shop |   item
+------+----------
+ 仙台 | ビール
+ 仙台 | 紙オムツ
+ 仙台 | 自転車
+ 仙台 | カーテン
+ 東京 | ビール
+ 東京 | 紙オムツ
+ 東京 | 自転車
+ 大阪 | テレビ
+ 大阪 | 紙オムツ
+ 大阪 | 自転車
+
+このテーブルから、ビール、紙おむつ、自転車取り扱いの過不足を店舗毎にを抽出する。
+
+SELECT
+SI.shop,
+COUNT(SI.item) AS my_item_cnt,
+(SELECT COUNT(item) FROM Items) - COUNT(SI.item) AS diff_cnt
+
+FROM
+ShopItems AS SI,
+Items AS I
+
+WHERE
+SI.item = I.item
+
+GROUP BY
+SI.shop
+;
+
+ shop | my_item_cnt | diff_cnt
+------+-------------+----------
+ 東京 |           3 |        0
+ 仙台 |           3 |        0
+ 大阪 |           2 |        1
