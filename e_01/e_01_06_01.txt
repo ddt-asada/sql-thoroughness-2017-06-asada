@@ -1,0 +1,17 @@
+演習1-6-1
+行間比較の簡略化
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+SELECT S1.year, S1.sale,
+       CASE SIGN(sale -
+              (SELECT sale
+                 FROM Sales S2
+                WHERE S2.year = S1.year - 1) )
+		WHEN 0 THEN '→'
+		WHEN 1 THEN '↑'
+		WHEN -1 THEN '↓'
+		ELSE '-' END AS var
+FROM Sales S1
+ORDER BY year
+;
