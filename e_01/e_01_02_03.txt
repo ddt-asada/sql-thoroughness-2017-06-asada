@@ -1,0 +1,83 @@
+演習1-2-3
+ランキングの更新
+作成日：2017年6月13日
+作成者：浅田　知嗣
+
+ district |  name   | price | ranking | ranking2
+----------+---------+-------+---------+----------
+ 東北     | みかん  |   100 |         |
+ 東北     | りんご  |    50 |         |
+ 東北     | ぶどう  |    50 |         |
+ 東北     | レモン  |    30 |         |
+ 関東     | レモン  |   100 |         |
+ 関東     | パイン  |   100 |         |
+ 関東     | りんご  |   100 |         |
+ 関東     | ぶどう  |    70 |         |
+ 関西     | レモン  |    70 |         |
+ 関西     | スイカ  |    30 |         |
+ 関西     | りんご  |    30 |         |
+
+このテーブルのランキングの列にランキングを代入してく。
+
+自己結合によるもの
+UPDATE
+DistrictProducts AS D1
+
+SET
+ranking = (SELECT
+COUNT(D2.price) + 1
+
+FROM
+DistrictProducts AS D2
+
+WHERE
+D1.district = D2.district
+AND
+D1.price < D2.price
+)
+;
+
+ district |  name   | price | ranking | ranking2
+----------+---------+-------+---------+----------
+ 東北     | みかん  |   100 |       1 |
+ 東北     | りんご  |    50 |       2 |
+ 東北     | ぶどう  |    50 |       2 |
+ 東北     | レモン  |    30 |       4 |
+ 関東     | レモン  |   100 |       1 |
+ 関東     | パイン  |   100 |       1 |
+ 関東     | りんご  |   100 |       1 |
+ 関東     | ぶどう  |    70 |       4 |
+ 関西     | レモン  |    70 |       1 |
+ 関西     | スイカ  |    30 |       2 |
+ 関西     | りんご  |    30 |       2 |
+
+OLAP関数を利用したもの。
+
+UPDATE
+DistrictProducts
+
+SET
+ranking2 = (SELECT D1.rank_1
+		FROM (SELECT district, name, RANK() OVER (PARTITION BY district ORDER BY price DESC) AS rank_1
+
+			FROM
+			DistrictProducts) AS D1
+		WHERE
+		D1.district = DistrictProducts.district
+		AND
+		D1.name = DistrictProducts.name)
+;
+
+ district |  name   | price | ranking | ranking2
+----------+---------+-------+---------+----------
+ 東北     | みかん  |   100 |       1 |        1
+ 東北     | りんご  |    50 |       2 |        2
+ 東北     | ぶどう  |    50 |       2 |        2
+ 東北     | レモン  |    30 |       4 |        4
+ 関東     | レモン  |   100 |       1 |        1
+ 関東     | パイン  |   100 |       1 |        1
+ 関東     | りんご  |   100 |       1 |        1
+ 関東     | ぶどう  |    70 |       4 |        4
+ 関西     | レモン  |    70 |       1 |        1
+ 関西     | スイカ  |    30 |       2 |        2
+ 関西     | りんご  |    30 |       2 |        2
