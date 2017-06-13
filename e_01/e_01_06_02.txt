@@ -1,0 +1,25 @@
+演習1-6-2
+OVERLAPSで期間の重複を調べる
+作成日：2017年6月13日
+作成日：浅田　知嗣
+
+SELECT
+R1.reserver,
+R1.start_date,
+R1.end_date
+
+FROM
+Reservations AS R1
+
+WHERE
+EXISTS (SELECT *
+	FROM Reservations AS R2
+	WHERE R1.reserver <> R2.reserver
+	AND
+	(R1.start_date, R1.end_date) OVERLAPS (R2.start_date, R2.end_date))
+;
+
+ reserver | start_date |  end_date
+----------+------------+------------
+ 山本     | 2006-11-03 | 2006-11-04
+ 内田     | 2006-11-03 | 2006-11-05
