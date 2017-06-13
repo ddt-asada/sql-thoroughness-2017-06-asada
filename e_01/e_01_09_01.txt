@@ -1,0 +1,55 @@
+演習1-9-1
+欠番を全て求める
+作成日：2017年6月14日
+作成者：浅田　知嗣
+
+NOT EXISTSを利用したもの
+
+SELECT
+S1.seq
+
+FROM
+Sequence AS S1
+
+WHERE
+S1.seq BETWEEN 1 AND 12
+AND
+NOT EXISTS (SELECT
+	    S2.seq
+	    FROM
+	    SeqTbl AS S2
+	    WHERE
+	    S2.seq = S1.seq)
+;
+
+ seq
+-----
+  10
+   3
+   9
+
+外部結合を利用したもの
+
+SELECT
+S1.seq
+
+FROM
+Sequence AS S1
+
+LEFT OUTER JOIN
+SeqTbl AS S2
+
+ON
+S1.seq = S2.seq
+
+WHERE
+S1.seq BETWEEN 1 AND 12
+AND
+S2.seq IS NULL
+;
+
+ seq
+-----
+  10
+   3
+   9
