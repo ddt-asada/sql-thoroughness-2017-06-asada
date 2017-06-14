@@ -1,0 +1,27 @@
+‰‰K1-10-2
+s‚É‚æ‚Á‚ÄðŒ‚ªˆÙ‚È‚é“Á«ŠÖ”
+ì¬“úF2017”N6ŒŽ14“ú
+ì¬ŽÒFó“c@’mŽk
+
+SELECT
+student_id
+
+FROM
+TestScores
+
+WHERE
+subject IN ('‘Œê', 'ŽZ”')
+
+GROUP BY
+student_id
+
+HAVING
+SUM(CASE WHEN subject = '‘Œê' AND score >= 50 THEN 1
+	 WHEN subject = 'ŽZ”' AND score >= 80 THEN 1
+	 ELSE 0 END) = 2
+;
+
+ student_id
+------------
+        100
+        200
